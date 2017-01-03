@@ -1,0 +1,70 @@
+<div class="menu-left">
+  <div class="profile-main-info">
+    <img src="http://www.aspirehire.co.uk/aspirehire-co-uk/_img/profile.svg" class="menu-photo">
+    <h2><%= current_user.first_name %> <%= current_user.last_name.upcase %></h2>
+  </div>
+  <% if current_user.admin %>
+
+  <!-- LIEN VERS ADMIN_PATH (dashboard) -->
+  <%= link_to admin_path do %>
+  <div class="menu-btn active" id="dashboard-btn">
+    <h3><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</h3>
+  </div>
+  <% end %>
+
+  <!-- LIEN VERS ADMIN_HOSTEL_PATH (dashboard) -->
+  <%= link_to admin_hostel_path do %>
+  <div class="menu-btn" id="hostel-btn">
+    <h3><i class="fa fa-h-square" aria-hidden="true"></i> Votre Hôtel</h3>
+  </div>
+  <% end %>
+
+  <!-- LIEN VERS ADMIN_ROOMS_PATH -->
+  <%= link_to admin_rooms_path do %>
+  <div class="menu-btn" id="rooms-btn">
+    <h3><i class="fa fa-bed" aria-hidden="true"></i> Vos Chambres</h3>
+  </div>
+  <% end %>
+
+
+  <!-- LIEN VERS ADMIN_RESTAURANTS_PATH (dashboard) -->
+  <%= link_to admin_restaurants_path do %>
+  <div class="menu-btn" id="restaurants-btn">
+    <h3><i class="fa fa-cutlery" aria-hidden="true"></i> Votre restaurant</h3>
+  </div>
+  <% end %>
+
+  <!-- LIEN VERS ADMIN_BOOKINGS_PATH (dashboard) -->
+  <%= link_to admin_bookings_path do %>
+  <div class="menu-btn" id="bookings-btn">
+    <h3><i class="fa fa-calendar-o" aria-hidden="true"></i> Vos réservations</h3>
+  </div>
+  <% end %>
+
+  <!-- LIEN VERS ADMIN_CUSTOMERS_PATH -->
+  <%= link_to admin_customers_path do %>
+  <div class="menu-btn" id="customers-btn">
+    <h3><i class="fa fa-user" aria-hidden="true"></i> Vos Clients</h3>
+  </div>
+  <% end %>
+
+  <!-- LIEN VERS ADMIN_EMPLOYEES_PATH -->
+  <%= link_to admin_employees_path do %>
+  <div class="menu-btn" id="employees-btn">
+    <h3><i class="fa fa-briefcase" aria-hidden="true"></i> Vos Employés</h3>
+  </div>
+  <% end %>
+
+  <!-- LIEN VERS ADMIN_BLOG_PATH -->
+  <%= link_to admin_blog_path do %>
+  <div class="menu-btn" id="blog-btn">
+    <h3><i class="fa fa-newspaper-o" aria-hidden="true"></i> Le Blog</h3>
+  </div>
+  <% end %>
+
+  <!-- LIEN VERS PROMOTIONS -->
+  <div class="menu-btn" id="promotions-btn">
+    <h3><i class="fa fa-gift" aria-hidden="true"></i> Les Promotions</h3>
+  </div>
+  <% end %>
+</div>

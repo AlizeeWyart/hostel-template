@@ -1,0 +1,230 @@
+$dark-color:#0B1F45;
+$dark-color-opac: #4A5C7D;
+$yes-color: #967A51;
+$third-color: white;
+
+.wrapper-admin {
+  // MAIN INFO
+  a {
+    text-decoration: none;
+  }
+  h1 {
+    margin:0;
+    padding:0;
+  }
+  h3 {
+    font-size:14px;
+    font-weight:100;
+    margin:0;
+    padding:0;
+  }
+  h2 {
+    margin:0;
+  }
+  p {
+    font-family: "Raleway";
+  }
+  h4 {
+    margin:0;
+    padding:0;
+  }
+  .text-left {
+    align-text: left;
+  }
+  .text-right {
+    align-text: right;
+  }
+
+  // TABLES
+  table {
+    border: 1px solid #967A51;
+    width: 100%;
+    margin-top: 20px;
+    td {
+      padding: 20px;
+    }
+  }
+
+  // BTNS
+  .edit-btn {
+    border: none;
+    background-color: $yes-color;
+    color: white;
+    font-family: "Raleway";
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 100;
+    text-transform: uppercase;
+  }
+  .edit-btn:hover {
+    background-color: $dark-color;
+  }
+  .sub-menu {
+    flex: 1 0 100%;
+    margin-bottom:20px;
+    padding-left:20px;
+    ul {
+      padding:0;
+      li {
+        display: inline-block;
+        margin-right: 20px;
+        h2 {
+          font-size: 24px;
+          text-transform: uppercase;
+          font-weight: 100;
+        }
+      }
+      li.active {
+        border-bottom: 2px solid $yes-color;
+        h2 {
+          font-weight:300;
+        }
+      }
+      li:hover {
+        border-bottom: 2px solid $yes-color;
+        h2 {
+          font-weight:300;
+        }
+        cursor:pointer;
+      }
+    }
+  }
+
+  // MENU A GAUCHE
+  .menu-left {
+    background-color: $dark-color ;
+    width: 160px;
+    min-height:100vh;
+    position:fixed;
+    left:0;
+    top:0;
+    z-index:12;
+    .profile-main-info {
+      color: $yes-color;
+      text-align:center;
+      margin-bottom: 30px;
+      h2 {
+        font-size: 100%;
+      }
+      .menu-photo {
+        width: 50%;
+        margin: 15px;
+        background-color:white;
+        border-radius:50%;
+      }
+    }
+    .menu-btn {
+      color:white;
+      padding: 15px 15px 15px 15px;
+      i {
+        margin-right:5px;
+      }
+    }
+    .menu-btn.active {
+      border-left: 3px solid $yes-color;
+      background-color: $dark-color-opac;
+      h3 {
+        font-weight: 300;
+      }
+    }
+    .menu-btn:hover {
+      cursor:pointer;
+      background-color: $dark-color-opac;
+      border-left: 3px solid $yes-color;
+    }
+  }
+  // MENU A DROITE
+  .content-right {
+    padding-left: 160px;
+    .title-content {
+      position:fixed;
+      top:0;
+      height:15vh;
+      background-color:$yes-color;
+      z-index:10;
+      padding: 20px 40px 20px 40px;
+      text-align: center;
+      width: 100%;
+      i {
+        display:none;
+      }
+      h1 {
+        margin-left: -150px;
+        color:$third-color;
+        text-transform: uppercase;
+        font-weight: 200;
+        color: white;
+      }
+      h1 span {
+        border-bottom: 2px solid $dark-color;
+      }
+    }
+    .admin-content {
+      display:flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      margin-top: 30px;
+      justify-content: space-between;
+      padding: 40px;
+    }
+    .half-width {
+      flex: 1 1 40%;
+      margin: 20px;
+    }
+    .all-width {
+      flex: 0 0 90%;
+      margin: 0 0px 20px 20px;
+    }
+    .admin-card {
+      border-radius:2px;
+      box-shadow: 1px 1px rgba(150, 122, 81, 0.33);
+      background-color: rgba(150, 122, 81, 0.07);
+      padding: 2%;
+      text-align:center;
+      i {
+        margin-right:10px;
+      }
+      h2 {
+        border-bottom: 2px solid #967A51;
+        text-transform: uppercase;
+        font-weight: 200;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+      }
+      .sub-admin-card {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .sub-sub-admin-card {
+        flex: 1 1 45%;
+        margin: 5px;
+        padding: 0 10px 0 10px;
+      }
+      h4 {
+        font-family: "Raleway";
+        font-size:14px;
+        font-weight:100;
+        margin-bottom:5px;
+      }
+      .calendar {
+        h2 {
+          border: none;
+          font-size: 22px;
+          margin:0;
+          padding:0;
+          font-weight:300;
+        }
+        .first-row {
+          background-color: white;
+          border-bottom: 1px solid $yes-color;
+        }
+        .first-column-td {
+          border-right: 1px solid $yes-color;
+        }
+      }
+    }
+  }
+}
+
+

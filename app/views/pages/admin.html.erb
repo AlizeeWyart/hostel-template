@@ -1,0 +1,199 @@
+
+
+
+<div class="wrapper-admin">
+  <!-- MENU A GAUCHE -->
+  <div class="menu-left">
+    <div class="profile-main-info">
+      <img src="http://www.aspirehire.co.uk/aspirehire-co-uk/_img/profile.svg" class="menu-photo">
+      <h2><%= current_user.first_name %> <%= current_user.last_name.upcase %></h2>
+    </div>
+    <% if current_user.admin %>
+    <div class="menu-btn active" data-target="#hostel-content">
+      <h3><i class="fa fa-h-square" aria-hidden="true"></i> Votre Hôtel <%= @hostels.count %></h3>
+    </div>
+    <div class="menu-btn" data-target="#rooms-content">
+      <h3><i class="fa fa-bed" aria-hidden="true"></i> Vos Chambres</h3>
+    </div>
+    <div class="menu-btn" data-target="#restaurants-content">
+      <h3><i class="fa fa-cutlery" aria-hidden="true"></i> Votre restaurant</h3>
+    </div>
+    <div class="menu-btn" data-target="#bookings-content">
+      <h3><i class="fa fa-calendar-o" aria-hidden="true"></i> Vos réservations</h3>
+    </div>
+    <div class="menu-btn" data-target="#customers-content">
+      <h3><i class="fa fa-user" aria-hidden="true"></i> Vos Clients</h3>
+    </div>
+    <div class="menu-btn" data-target="#employees-content">
+      <h3><i class="fa fa-briefcase" aria-hidden="true"></i> Vos Employés</h3>
+    </div>
+    <div class="menu-btn" data-target="#blog-content">
+      <h3><i class="fa fa-newspaper-o" aria-hidden="true"></i> Le Blog</h3>
+    </div>
+    <div class="menu-btn" data-target="#promotions-content">
+      <h3><i class="fa fa-gift" aria-hidden="true"></i> Les Promotions</h3>
+    </div>
+    <% end %>
+  </div>
+  <!-- CONTENU A DROITE -->
+  <div class="content-right">
+    <div class="title-content">
+      <h1><span id="title-content-admin">Mon dashboard</span></h1>
+    </div>
+      <!-- DASHBOARD CONTENT -->
+    <div class="admin-content hidden" id="dashboard-content">
+    Le Dashboard
+    </div>
+    <!-- HOSTEL INFO -->
+    <div class="admin-content" id="hostel-content">
+      <div class="hostel-main-info half-width admin-card">
+        <% hostel = @hostels.first %>
+        <%= render partial: "pages/shared_admin/edit_hostel_modals", locals: {hostel: hostel} %>
+        <h2><%= hostel.name %></h2>
+        <div class="sub-admin-card">
+          <div class="sub-sub-admin-card text-right">
+            <h3>"<%= hostel.short_description %>"</h3>
+          </div>
+          <div class="sub-sub-admin-card text-left">
+            <h4><i class="fa fa-envelope" aria-hidden="true"></i><%= hostel.email %></h4>
+            <h4><i class="fa fa-phone" aria-hidden="true"></i><%= hostel.phone_number %></h4>
+            <h4><i class="fa fa-map-marker" aria-hidden="true"></i><%= hostel.address %></h4>
+          </div>
+        </div>
+       <button type="button" class="edit-btn" data-toggle="modal" data-target="#HostelEditModalMainInfo">
+    Modifier
+      </button>
+      </div>
+      <div class="hostel-description half-width admin-card">
+        <p><%= hostel.description %> </p>
+        <button type="button" class="edit-btn" data-toggle="modal" data-target="#HostelEditDescription">
+    Modifier
+      </button>
+      </div>
+    </div>
+    <!-- ROOMS INFO -->
+    <div class="admin-content hidden" id="rooms-content">
+      <div class="sub-menu">
+        <ul>
+          <li class="active" data-target=".room-overview"><h2>Overview</h2></li>
+          <% counter = 1 %>
+          <% @rooms.each do |room| %>
+          <li><h2><%= counter %>. <%= room.name %></h2></li>
+          <% counter += 1 %>
+          <% end %>
+          <li><h2><i class="fa fa-plus" aria-hidden="true"></i></h2></li>
+        </ul>
+      </div>
+      <div class="room-content admin-card half-width room-overview">
+          <button type="button" class="edit-btn" data-toggle="modal" data-target="#NewRoom">
+          <i class="fa fa-plus" aria-hidden="true"></i> Nouvelle chambre
+          </button>
+        </div>
+        <!-- EACH ROOM CONTENT -->
+      <div class="room-content">
+
+      </div>
+    </div>
+    <!-- RESTAURANT INFO -->
+    <div class="admin-content">
+    Les Restaurants
+    </div>
+    <!-- BOOKINGS INFO -->
+    <div class="admin-content">
+      <div class="sub-menu">
+        <ul>
+          <li class="active" data-target="#daily-bookings"><h2>Aujourd'hui</h2></li>
+          <li class="" data-target="#daily-bookings"><h2>Cette semaine</h2></li>
+          <li class="" data-target="#daily-bookings"><h2>Ce mois-ci</h2></li>
+        </ul>
+      </div>
+      <div class="admin-card all-width" id="daily-bookings">
+        <h3><i class="fa fa-calendar" aria-hidden="true"></i>Aujourd'hui, le <%= Date.today.strftime("%d-%m-%Y") %> </h3>
+        <button class="edit-btn">Changer de jour
+        </button>
+        <h3><i class="fa fa-bookmark" aria-hidden="true"></i> Vous avez <%= @today_bookings.count %> réservation<% if @today_bookings.count > 1%>s<%end%></h3>
+        <table class="calendar">
+          <tr class="first-row">
+            <td class="first-column-td"><h2>Chambre</h2></td>
+            <td><h2>Statut</h2></td>
+            <td><h2>Client</h2></td>
+            <td><h2>Contact</h2></td>
+          </tr>
+          <% counter = 1 %>
+          <% @rooms.each do |room| %>
+            <% b = @today_bookings.select { |booking| booking.room == room } %>
+            <tr>
+              <td class="first-column-td">
+                <h2><%= counter %>. <%= room.name %></h2>
+              </td>
+              <% if b.count == 1 %>
+                <td><h4>Réservée</h4></td>
+                <td><h4><%= b.first.user.first_name %> <%= b.first.user.last_name %></h4></td>
+                <td>
+                  <h4><i class="fa fa-envelope" aria-hidden="true"></i><%= b.first.user.email %></h4>
+                  <h4><i class="fa fa-phone" aria-hidden="true"></i><%= b.first.user.phone_number %></h4>
+                </td>
+              <% else %>
+                <% if b.count == 0 %>
+                  <td><h4>Libre</h4></td>
+                <% else %>
+                  <td><h4>Error</h4></td>
+                <% end %>
+                <td><h4>-</h4></td>
+                <td><h4>-</h4></td>
+              <% end %>
+            </tr>
+            <% counter += 1 %>
+          <% end %>
+        </table>
+      </div>
+    </div>
+    <!-- CUSTOMERS INFO -->
+    <div class="admin-content hidden" id="customers-content">
+    Les Clients
+    </div>
+    <!-- EMPLOYEES INFO -->
+    <div class="admin-content hidden" id="employees-content">
+    Les employés
+    </div>
+    <!-- BLOG & ARTICLES INFO -->
+    <div class="admin-content hidden" id="blog-content">
+    Le Blog
+    </div>
+    <!-- PROMOTIONS INFO -->
+    <div class="admin-content hidden" id="promotions-content">
+    Les promotions
+    </div>
+  </div>
+</div>
+
+
+<% content_for(:after_js) do %>
+  <%= javascript_tag do %>
+    $(document).ready(function() {
+      console.log("hello");
+      $(".menu-btn").on("click", function(e){
+        $(".menu-btn").removeClass("active");
+        $(this).addClass("active");
+        var title = $(this).closest('div').children('h3').html();
+        $("#title-content-admin").html(title);
+        <!-- HIDE PROFILE HEAD -->
+        $(".admin-content").addClass("hidden");
+        <!-- // Show target tab-content (use class="hidden") -->
+        tabSelector = $(this).data("target");
+        console.log(tabSelector);
+        $(tabSelector).removeClass("hidden");
+      });
+      $("li").on("click", function(e){
+        $("li").removeClass("active");
+        $(this).addClass("active");
+        <!-- HIDE PROFILE HEAD -->
+        $(".room-content").addClass("hidden");
+        <!-- // Show target tab-content (use class="hidden") -->
+        tabSelector = $(this).data("target");
+        console.log(tabSelector);
+        $(tabSelector).removeClass("hidden");
+      });
+    });
+  <% end %>
+<% end %>

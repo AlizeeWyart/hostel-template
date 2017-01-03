@@ -1,0 +1,95 @@
+<h4>Nouvelle Réservation</h4>
+<%= simple_form_for [:admin, new_booking] do |f| %>
+<%= f.error_notification %>
+<div class="row">
+  <h3>Heures & Dates</h3>
+  <div class="col-xs-6">
+    <%= f.input :date %>
+    <%= f.input :room_id, collection: @rooms %>
+    <a class="edit-btn" href="#">
+      Vérifier la disponibilité et le prix
+    </a>
+  </div>
+  <div class="col-xs-6">
+  </div>
+</div>
+<div class="row">
+  <h3>Le Client</h3>
+  <div class="col-xs-6">
+    <input type="text" id="email" label="Email " name="email"></input>
+    <input type="text" id="fname" label="First Name " name="fname"></input>
+    <input type="text" label="Last Name " name="lname" id="lname" ></input>
+    <a class="edit-btn" id="customer-check">
+      Vérifier la base de donnée client
+    </a>
+  </div>
+</div>
+<%= f.input :arrival_hour %>
+<%= f.input :departure_hour %>
+<%= f.input :total_reduction %>
+<%= f.input :final_price %>
+<%= f.button :submit %>
+<% end %>
+
+<div class="user-card">
+  <h2>Nous avons obtenu <%= @potential_users.count %> clients !</h2>
+  <% @potential_users.each do |user| %>
+  <h3><%= user.first_name %> <%= user.last_name %> </h3>
+  <h4><%= user.phone_number %> <%= user.email %> </h4>
+<% end %>
+</div>
+
+
+<% content_for(:after_js) do %>
+  <%= javascript_tag do %>
+    $(document).ready(function() {
+      console.log("modal workds");
+      $('#customer-check').on("click", function() {
+        var customerData = $('#booking_user').val();
+        console.log(customerData);
+      });
+    });
+
+    $("#customer-check").on("click", function() {
+      var fname = $('#fname').val();
+      console.log(fname);
+      var lname = $('#lname').val();
+      console.log(lname);
+      var email = $('#booking_user').val();
+      console.log(email);
+      var myURL = document.location;
+      document.location = myURL + "?fname=" + fname + "&" + "lname=" + lname + "&" + "email=" + email;
+    });
+    $("#customer-check").on("click", function() {
+      $.ajax({ url: "/admin/bookings",
+          type: 'GET',
+          data: fname = $('#fname').val(),
+      });
+      console.log(fname);
+    });
+
+  <% end %>
+<% end %>
+
+<!-- $.ajax({
+        url: "/",
+        type: "post",
+        data: values,
+        success: function(){
+          alert('Saved Successfully');
+        },
+        error:function(){
+         alert('Error');
+        }
+    $("#customer-check").on("click", function() {
+      var fname = $('#fname').val();
+      console.log(fname);
+      var lname = $('#lname').val();
+      console.log(lname);
+      var email = $('#email').val();
+      console.log(email);
+      var myURL = document.location;
+      document.location = myURL + "?fname=" + fname + "?lname=" + lname + "?email=" + email;
+    });
+      }); -->
+

@@ -1,0 +1,83 @@
+<div class="wrapper-admin">
+  <%= render partial: "admin/shared/menu_left" %>
+  <div class="content-right">
+    <div class="title-content">
+      <h1><span id="title-content-admin">Mes Réservations</span></h1>
+    </div>
+    <!-- BOOKINGS CONTENT -->
+    <div class="admin-content">
+      <div class="sub-menu">
+        <ul>
+          <li class="active" data-target="#daily-bookings"><h2>Aujourd'hui</h2></li>
+          <li class="" data-target="#daily-bookings"><h2>Cette semaine</h2></li>
+          <li class="" data-target="#daily-bookings"><h2>Ce mois-ci</h2></li>
+
+          <button type="button" class="edit-btn" data-toggle="modal" data-target="#NewBookingModal"><i class="fa fa-plus"></i>Nouvelle réservation
+          </button>
+        </ul>
+      </div>
+      <div class="admin-card all-width" id="daily-bookings">
+        <h3><i class="fa fa-calendar" aria-hidden="true"></i>Aujourd'hui, le <%= Date.today.strftime("%d-%m-%Y") %> </h3>
+        <button class="edit-btn">Changer de jour
+        </button>
+        <h3><i class="fa fa-bookmark" aria-hidden="true"></i> Vous avez <%= @today_bookings.count %> réservation<% if @today_bookings.count > 1%>s<%end%></h3>
+        <table class="calendar">
+          <tr class="first-row">
+            <td class="first-column-td"><h2>Chambre</h2></td>
+            <td><h2>Statut</h2></td>
+            <td><h2>Client</h2></td>
+            <td><h2>Contact</h2></td>
+          </tr>
+          <% counter = 1 %>
+          <% @rooms.each do |room| %>
+            <% b = @today_bookings.select { |booking| booking.room == room } %>
+            <tr>
+              <td class="first-column-td">
+                <h2><%= counter %>. <%= room.name %></h2>
+              </td>
+              <% if b.count == 1 %>
+                <td><h4>Réservée</h4></td>
+                <td><h4><%= b.first.user.first_name %> <%= b.first.user.last_name %></h4></td>
+                <td>
+                  <h4><i class="fa fa-envelope" aria-hidden="true"></i><%= b.first.user.email %></h4>
+                  <h4><i class="fa fa-phone" aria-hidden="true"></i><%= b.first.user.phone_number %></h4>
+                </td>
+              <% else %>
+                <% if b.count == 0 %>
+                  <td><h4>Libre</h4></td>
+                <% else %>
+                  <td><h4>Error</h4></td>
+                <% end %>
+                <td><h4>-</h4></td>
+                <td><h4>-</h4></td>
+              <% end %>
+            </tr>
+            <% counter += 1 %>
+          <% end %>
+        </table>
+      </div>
+    <%= render partial: "admin/shared/new_booking", locals: {new_booking: @new_booking} %>
+    </div>
+  </div>
+</div>
+
+
+<% content_for(:after_js) do %>
+  <%= javascript_tag do %>
+    $(".menu-btn").removeClass("active");
+    $("#bookings-btn").addClass("active");
+    console.log("Js is working");
+    $(document).ready(function() {
+      $("li").on("click", function(e){
+          $("li").removeClass("active");
+          $(this).addClass("active");
+          <!-- HIDE PROFILE HEAD -->
+          $(".room-content").addClass("hidden");
+          <!-- // Show target tab-content (use class="hidden") -->
+          tabSelector = $(this).data("target");
+          console.log(tabSelector);
+          $(tabSelector).removeClass("hidden");
+      });
+    });
+  <% end %>
+<% end %>

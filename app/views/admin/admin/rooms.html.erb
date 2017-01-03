@@ -1,0 +1,52 @@
+<div class="wrapper-admin">
+  <%= render partial: "admin/shared/menu_left" %>
+  <div class="content-right">
+    <div class="title-content">
+      <h1><span id="title-content-admin">Mes Chambres</span></h1>
+    </div>
+    <!-- ROOMS INFO -->
+    <div class="admin-content">
+      <div class="sub-menu">
+        <ul>
+          <li class="active" data-target=".room-overview"><h2>Overview</h2></li>
+          <% counter = 1 %>
+          <% @rooms.each do |room| %>
+          <li><h2><%= counter %>. <%= room.name %></h2></li>
+          <% counter += 1 %>
+          <% end %>
+          <li><h2><i class="fa fa-plus" aria-hidden="true"></i></h2></li>
+        </ul>
+      </div>
+      <div class="room-content admin-card half-width room-overview">
+          <button type="button" class="edit-btn" data-toggle="modal" data-target="#NewRoom">
+          <i class="fa fa-plus" aria-hidden="true"></i> Nouvelle chambre
+          </button>
+        </div>
+        <!-- EACH ROOM CONTENT -->
+      <div class="room-content">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<% content_for(:after_js) do %>
+  <%= javascript_tag do %>
+    $(".menu-btn").removeClass("active");
+    $("#rooms-btn").addClass("active");
+    console.log("Js is working");
+    $(document).ready(function() {
+      $("li").on("click", function(e){
+          $("li").removeClass("active");
+          $(this).addClass("active");
+          <!-- HIDE PROFILE HEAD -->
+          $(".room-content").addClass("hidden");
+          <!-- // Show target tab-content (use class="hidden") -->
+          tabSelector = $(this).data("target");
+          console.log(tabSelector);
+          $(tabSelector).removeClass("hidden");
+      });
+    });
+  <% end %>
+<% end %>

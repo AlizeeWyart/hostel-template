@@ -1,0 +1,34 @@
+<div class="wrapper-admin">
+  <%= render partial: "admin/shared/menu_left" %>
+  <div class="content-right">
+    <div class="title-content">
+      <h1><span id="title-content-admin">Mon Restaurant</span></h1>
+    </div>
+    <!-- RESTAURANT CONTENT -->
+    <div class="admin-content">
+    Les Restaurants
+    </div>
+  </div>
+</div>
+
+
+
+<% content_for(:after_js) do %>
+  <%= javascript_tag do %>
+    $(".menu-btn").removeClass("active");
+    $("#restaurants-btn").addClass("active");
+    console.log("Js is working");
+    $(document).ready(function() {
+      $("li").on("click", function(e){
+          $("li").removeClass("active");
+          $(this).addClass("active");
+          <!-- HIDE PROFILE HEAD -->
+          $(".room-content").addClass("hidden");
+          <!-- // Show target tab-content (use class="hidden") -->
+          tabSelector = $(this).data("target");
+          console.log(tabSelector);
+          $(tabSelector).removeClass("hidden");
+      });
+    });
+  <% end %>
+<% end %>
