@@ -8,12 +8,13 @@
     <div class="admin-content">
       <div class="sub-menu">
         <ul>
-          <li class="active" data-target="#daily-bookings"><h2>Aujourd'hui</h2></li>
-          <li class="" data-target="#daily-bookings"><h2>Cette semaine</h2></li>
-          <li class="" data-target="#daily-bookings"><h2>Ce mois-ci</h2></li>
+          <li class="active" data-target="#daily-bookings"><h2>JOUR</h2></li>
+          <li class="" data-target="#daily-bookings"><h2>SEMAINE</h2></li>
+          <li class="" data-target="#daily-bookings"><h2>MOIS</h2></li>
 
-          <button type="button" class="edit-btn" data-toggle="modal" data-target="#NewBookingModal"><i class="fa fa-plus"></i>Nouvelle réservation
-          </button>
+          <%= link_to new_admin_booking_path, class:"btn edit-btn" do %>
+          <i class="fa fa-plus"></i> Résa
+          <% end %>
         </ul>
       </div>
       <div class="admin-card all-width" id="daily-bookings">
@@ -25,6 +26,7 @@
           <tr class="first-row">
             <td class="first-column-td"><h2>Chambre</h2></td>
             <td><h2>Statut</h2></td>
+            <td><h2>Action</h2></td>
             <td><h2>Client</h2></td>
             <td><h2>Contact</h2></td>
           </tr>
@@ -37,6 +39,7 @@
               </td>
               <% if b.count == 1 %>
                 <td><h4>Réservée</h4></td>
+                <td><a class="btn edit-btn"><i class="fa fa-eye"></i></a><i></i><a class="btn edit-btn"><i class="fa fa-edit"></i> </a></td>
                 <td><h4><%= b.first.user.first_name %> <%= b.first.user.last_name %></h4></td>
                 <td>
                   <h4><i class="fa fa-envelope" aria-hidden="true"></i><%= b.first.user.email %></h4>
@@ -45,7 +48,12 @@
               <% else %>
                 <% if b.count == 0 %>
                   <td><h4>Libre</h4></td>
+                  <td><%= link_to new_admin_booking_path(:customer => "", :room_id => room.id, :date => Date.today.strftime("%Y-%m-%d")) , class:"btn edit-btn" do %>
+                    <i class="fa fa-plus"></i> résa
+                  <% end %>
+                  </td>
                 <% else %>
+                  <td><h4>Error</h4></td>
                   <td><h4>Error</h4></td>
                 <% end %>
                 <td><h4>-</h4></td>
@@ -56,7 +64,6 @@
           <% end %>
         </table>
       </div>
-    <%= render partial: "admin/shared/new_booking", locals: {new_booking: @new_booking} %>
     </div>
   </div>
 </div>

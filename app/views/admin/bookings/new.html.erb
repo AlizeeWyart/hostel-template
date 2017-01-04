@@ -2,46 +2,85 @@
   <%= render partial: "admin/shared/menu_left" %>
   <div class="content-right">
     <div class="title-content">
-      <h1><span id="title-content-admin">Mes Réservations</span></h1>
+      <h1><span id="title-content-admin">Nouvelle Réservation</span></h1>
     </div>
-    <h4>Nouvelle Réservation</h4>
     <%= simple_form_for [:admin, @booking] do |f| %>
     <%= f.error_notification %>
-    <div class="row">
-      <h3>Heures & Dates</h3>
-      <div class="col-xs-6">
-        <%= f.input :date, as: :date, html5: true %>
-        <%= f.input :room_id, collection: @rooms %>
-        <a class="edit-btn" id="price_check">
-          Vérifier la disponibilité et le prix
+    <div class="admin-content" id="hostel-content">
+      <div class="half-width admin-card">
+        <h2>Heures & Dates</h2>
+        <div class="col-xs-6">
+          <% if !params[:date].blank? %>
+            <%= f.input :date, as: :date, html5: true, value: "2017-01-09" %>
+          <% else %>
+            <%= f.input :date, as: :date, html5: true %>
+          <% end %>
+          <!-- LA CHAMBRE -->
+          <% if !params[:room_id].blank? %>
+            <%= f.input :room_id, collection: @rooms, selected: params[:room_id] %>
+          <% else %>
+            <%= f.input :room_id, collection: @rooms %>
+          <% end %>
+        </div>
+        <div class="col-xs-6">
+          <% if !params[:date].blank? && !params[:room_id].blank? %>
+            <% if @potential_booking.count == 0 %>
+            <h4>La chambre "<%=@potential_room.name %>" est disponible !</h4>
+            <% else %>
+            <h4>La chambre "<%=@potential_room.name %>" n'est plus disponible à cette date</h4>
+            <% end %>
+          <% end %>
+        </div>
+        <a class="btn edit-btn" id="booking-check">
+            Vérifier la disponibilité et le prix
         </a>
       </div>
-      <div class="col-xs-6">
+      <div class="half-width admin-card">
+        <h2>Le Client</h2>
+        <div class="col-xs-6">
+          <label>Trouver mon client </label>
+          <h3>Nom, prénom, email ou n° de téléphone</h3>
+          <input type="text" id="customer-data"  name="email" <% if !params[:customer].blank? %> value="<%= params[:customer]%>" <% end %>></input>
+          <a class="btn edit-btn" id="customer-check">
+            Trouver mon client
+          </a>
+          <h3>OU</h3>
+          <a class="btn edit-btn" id="customer-check">
+            Créer un nouveau client
+          </a>
+        </div>
+        <div class="col-xs-6">
+          <% if !@potential_users.nil? %>
+          <% if @potential_users.count == 0 %>
+            <h3>Pas de client trouvé</h3>
+            (à ajouter créer un compte)
+          <% elsif @potential_users.count >= 1 %>
+            <h3>Nous avons obtenu <%= @potential_users.count %> clients !</h3>
+            <%= f.input :user, collection: @potential_users, :label_method => lambda { |user| "Mlle #{user.first_name} #{user.last_name}".html_safe }, :value_method => :id, selected: @potential_users.first %>
+          <% end %>
+          <% end %>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <h3>Le Client</h3>
-      <div class="col-xs-6">
-        <% if @potential_users.count == 0 %>
-        <input type="text" id="email" label="Email " name="email"></input>
-        <input type="text" id="fname" label="First Name " name="fname"></input>
-        <input type="text" label="Last Name " name="lname" id="lname" ></input>
-        <a class="edit-btn" id="customer-check">
-          Vérifier la base de donnée client
-        </a>
-        <% elsif @potential_users.count >= 1 %>
-          <%= f.input :user, collection: @potential_users %>
-        <% end %>
+      <div class="half-width admin-card">
+        <h2>Détails de la chambre</h2>
+        <img src="http://videosurveillance-strasbourg.fr/wp-content/uploads/2013/12/hotel-300x169.jpg" alt="">
       </div>
-    </div>
-    <%= f.input :arrival_hour %>
-    <%= f.input :departure_hour %>
+      <div class="half-width admin-card">
+        <h2>Autres informations</h2>
+        <%= f.input :arrival_hour %>
+        <%= f.input :departure_hour %>
+      </div>
+
     <%= f.input :total_reduction %>
     <%= f.input :final_price %>
     <%= f.button :submit %>
     <% end %>
+  </div>
+</div>
+</div>
 
-    <% if @potential_users.count >= 1 %>
+
+    <% if !@potential_users.nil? %>
     <div class="user-card">
       <h2>Nous avons obtenu <%= @potential_users.count %> clients !</h2>
       <% @potential_users.each do |user| %>
@@ -51,70 +90,44 @@
     <% end %>
     </div>
     <% end %>
-</div>
   </div>
-
+</div>
 
 <% content_for(:after_js) do %>
   <%= javascript_tag do %>
+    $(".menu-btn").removeClass("active");
+    $("#bookings-btn").addClass("active");
     $(document).ready(function() {
       console.log("modal workds");
-      $('#customer-check').on("click", function() {
-        var customerData = $('#booking_user').val();
-        console.log(customerData);
-      });
+      var customerInfo = location.search.substring(1).split("&")[0].split("=")[1];
+      console.log("client" + " : " + customerInfo);
+      $('#custom-data').val("customerInfo");
+      var roomId = location.search.substring(1).split("&")[2].split("=")[1];
+      var dateInfo = location.search.substring(1).split("&")[1].split("=")[1];
+      console.log(roomId);
+      $('#booking_date').val(dateInfo);
+      console.log(dateInfo);
     });
 
-    $("#customer-check").on("click", function() {
-      var fname = $('#fname').val();
-      console.log(fname);
-      var lname = $('#lname').val();
-      console.log(lname);
-      var email = $('#email').val();
-      console.log(email);
-      var myURL = document.location;
-      document.location = myURL + "?fname=" + fname + "&" + "lname=" + lname + "&" + "email=" + email;
-    });
-
-    $("#price_check").on("click", function() {
+    $("#booking-check").on("click", function() {
+      console.log("ça marche !");
       var room = $('select#booking_room_id :selected').val();
-      console.log(room);
       var date = $('#booking_date').val();
-      console.log(date);
-      var myURL = document.location;
-      document.location = myURL + "&" + "?room_id=" + room + "&" + "?date=" + date;
+      var customerdata = $('#customer-data').val();
+      var user = $('select#booking_user :selected').val();;
+      console.log(customerdata);
+      document.location = "/admin/bookings/new" + "?customer=" + customerdata + "&" + "date=" + date + "&" + "room_id=" + room + "&" + "user=" + user;
     });
 
     $("#customer-check").on("click", function() {
-      $.ajax({ url: "/admin/bookings",
-          type: 'GET',
-          data: fname = $('#fname').val(),
-      });
-      console.log(fname);
+      console.log("ça marche !");
+      var room = $('select#booking_room_id :selected').val();
+      var date = $('#booking_date').val();
+      var customerdata = $('#customer-data').val();
+      var user = $('select#booking_user :selected').val();
+      console.log(customerdata);
+      document.location = "/admin/bookings/new" + "?customer=" + customerdata + "&" + "date=" + date + "&" + "room_id=" + room + "&" + "user=" + user;
     });
-
   <% end %>
 <% end %>
-
-<!-- $.ajax({
-        url: "/",
-        type: "post",
-        data: values,
-        success: function(){
-          alert('Saved Successfully');
-        },
-        error:function(){
-         alert('Error');
-        }
-    $("#customer-check").on("click", function() {
-      var fname = $('#fname').val();
-      console.log(fname);
-      var lname = $('#lname').val();
-      console.log(lname);
-      var email = $('#email').val();
-      console.log(email);
-      var myURL = document.location;
-      document.location = myURL + "?fname=" + fname + "?lname=" + lname + "?email=" + email;
-    });
-      }); -->
 
