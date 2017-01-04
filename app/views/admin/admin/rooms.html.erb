@@ -11,21 +11,56 @@
           <li class="active" data-target=".room-overview"><h2>Overview</h2></li>
           <% counter = 1 %>
           <% @rooms.each do |room| %>
-          <li><h2><%= counter %>. <%= room.name %></h2></li>
+          <li data-target="#room-<%= room.id %>"><h2><%= counter %>. <%= room.name %></h2></li>
           <% counter += 1 %>
           <% end %>
           <li><h2><i class="fa fa-plus" aria-hidden="true"></i></h2></li>
         </ul>
       </div>
+      <!-- OVERVIEW -->
       <div class="room-content admin-card half-width room-overview">
           <button type="button" class="edit-btn" data-toggle="modal" data-target="#NewRoom">
           <i class="fa fa-plus" aria-hidden="true"></i> Nouvelle chambre
           </button>
         </div>
-        <!-- EACH ROOM CONTENT -->
-      <div class="room-content">
-
+      <!-- EACH ROOM CONTENT -->
+      <% @rooms.each do |room| %>
+      <div class="room-content hidden" id="room-<%= room.id %>">
+        <!-- DESCRIPTION -->
+        <div class="admin-card all-width">
+          <h2><%= room.name %></h2>
+          <div class="sub-admin-card">
+            <div class="sub-sub-admin-card text-right">
+              <h3><b>"<%= room.short_description %>"</b></h3>
+              <p><%= room.description %></p>
+            </div>
+            <div class="sub-sub-admin-card text-left">
+              <h3>Détails des fonctionnalités dans la chambre</h3>
+              <p><%= room.amenities %>
+            </div>
+          </div>
+          <%= render partial: "admin/shared/edit_room", locals: {room: room} %>
+          <button type="button" class="edit-btn" data-toggle="modal" data-target="#RoomEditModalDescription">
+          Modifier
+          </button>
+        </div>
+        <!-- LES FONCTIONNALITES -->
+        <div class="admin-card all-width">
+          <h2>Les fonctionnalités</h2>
+          <div class="sub-admin-card">
+            <% room.room_facilities.each do |facility| %>
+            <div class="facility-room-box text-left">
+              <h4><%= facility.facility.fontawesome.html_safe %> <%= facility.facility.name %></h4>
+              <p><%= facility.short_description %> </p>
+            </div>
+            <% end %>
+          </div>
+          <button type="button" class="edit-btn" data-toggle="modal" data-target="#HostelEditModalMainInfo">
+          Modifier
+          </button>
+        </div>
       </div>
+      <% end %>
     </div>
   </div>
 </div>

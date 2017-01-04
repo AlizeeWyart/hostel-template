@@ -22,6 +22,7 @@ class Admin::AdminController < ApplicationController
 
   def rooms
     @rooms = Room.all
+    @all_facilities = Facility.all
   end
 
   def users
